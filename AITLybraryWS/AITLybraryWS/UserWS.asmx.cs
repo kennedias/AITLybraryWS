@@ -6,6 +6,7 @@ using System.Web.Services;
 using BusinessLogic;
 using System.Data;
 using SystemFramework;
+using System.Web.Services.Protocols;
 
 namespace AITLybraryWS
 {
@@ -27,11 +28,33 @@ namespace AITLybraryWS
         }
 
         [WebMethod]
-        public DataTable UserLogin(string username, string pwd)
+        public DataTable UserLogin(string username, string password)
+        {
+           // try
+      //      {
+                UserLogic userLogic = new UserLogic();
+
+                return userLogic.PerformLogin(username, password).ToDataTable();
+        //    }
+   //         catch (Exception ex)
+     //       {
+     /*           RaiseException("AddCategories",
+          "http://tempuri.org/CategoriesService",
+          builder.ToString(),
+          "2000", "AddCategories", FaultCode.Client);
+
+
+                SoapException soapException = HandleSoapException();
+               // throw new SoapException(*/
+       //     }
+        }
+
+        [WebMethod]
+        public DataTable UserList()
         {
             UserLogic userLogic = new UserLogic();
 
-            return userLogic.PerformLogin(username, pwd).ToDataTable();
+            return userLogic.GetAllUser().ToDataTable();
         }
     }
 }

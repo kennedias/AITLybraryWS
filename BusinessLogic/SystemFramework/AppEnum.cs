@@ -58,5 +58,11 @@ namespace SystemFramework
             ID,
             Description
         }
+
+        public enum FaultSourceWS
+        {
+            AplicationError = 0,
+            BusinessError = 1
+        }
     }
 }

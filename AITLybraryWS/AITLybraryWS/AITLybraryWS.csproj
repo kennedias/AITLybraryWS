@@ -61,6 +61,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HandleSoapException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserWS.asmx.cs">
       <DependentUpon>UserWS.asmx</DependentUpon>
