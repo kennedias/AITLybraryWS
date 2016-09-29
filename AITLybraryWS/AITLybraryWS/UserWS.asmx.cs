@@ -30,23 +30,48 @@ namespace AITLybraryWS
         [WebMethod]
         public DataTable UserLogin(string username, string password)
         {
-           // try
-      //      {
+            try
+            {
                 UserLogic userLogic = new UserLogic();
 
                 return userLogic.PerformLogin(username, password).ToDataTable();
-        //    }
-   //         catch (Exception ex)
-     //       {
-     /*           RaiseException("AddCategories",
-          "http://tempuri.org/CategoriesService",
-          builder.ToString(),
-          "2000", "AddCategories", FaultCode.Client);
+            }
+            catch (BusinessLogicException ex)
+            {
+                HandleSoapException handleSoapExceptionnew = new HandleSoapException();
 
+            /*    CreateSoapException(string uri,
+                                    string webServiceNamespace,
+                                    string errorMessage,
+                                    string errorNumber,
+                                    string errorSource,
+                                    AppEnum.FaultSourceWS faultSource)
+             * **/
+                SoapException soapException = new SoapException();
 
-                SoapException soapException = HandleSoapException();
-               // throw new SoapException(*/
-       //     }
+                soapException = handleSoapExceptionnew.CreateSoapException("http://tempuri.org/CategoriesService",
+                                                                                         "PerformLogin",
+                                                                                         ex.Message, 
+                                                                                         AppEnum.FaultSourceWS.BusinessError.ToString(),
+                                                                                         "Business",
+                                                                                         AppEnum.FaultSourceWS.BusinessError);
+                throw soapException;
+               // return AppUtil.ThrowExceptionTable(ex);
+            }
+            catch (Exception ex)
+            {
+                HandleSoapException handleSoapExceptionnew = new HandleSoapException();
+                SoapException soapException = new SoapException();
+
+                soapException = handleSoapExceptionnew.CreateSoapException("http://tempuri.org/CategoriesService",
+                                                                                         "PerformLogin",
+                                                                                         ex.Message,
+                                                                                         AppEnum.FaultSourceWS.AplicationError.ToString(),
+                                                                                         "Business",
+                                                                                         AppEnum.FaultSourceWS.AplicationError);
+                throw soapException;
+                //return AppUtil.ThrowExceptionTable(ex);
+            }
         }
 
         [WebMethod]
@@ -56,5 +81,51 @@ namespace AITLybraryWS
 
             return userLogic.GetAllUser().ToDataTable();
         }
-    }
+
+  /*      [WebMethod]
+        public DataTable InsertUser(string userName, string userLevelDescription)
+        {
+            try
+            {
+                UserLogic userLogic = new UserLogic();
+              //  return userLogic.insertUser(userName, userLevelDescription);
+             }
+            catch (BusinessLogicException ex)
+            {
+                HandleSoapException handleSoapExceptionnew = new HandleSoapException();
+
+                /*    CreateSoapException(string uri,
+                                        string webServiceNamespace,
+                                        string errorMessage,
+                                        string errorNumber,
+                                        string errorSource,
+                                        AppEnum.FaultSourceWS faultSource)
+                
+                SoapException soapException = new SoapException();
+
+                soapException = handleSoapExceptionnew.CreateSoapException("http://tempuri.org/CategoriesService",
+                                                                                         "PerformLogin",
+                                                                                         ex.Message,
+                                                                                         AppEnum.FaultSourceWS.BusinessError.ToString(),
+                                                                                         "Business",
+                                                                                         AppEnum.FaultSourceWS.BusinessError);
+                throw soapException;
+                // return AppUtil.ThrowExceptionTable(ex);
+            }
+            catch (Exception ex)
+            {
+                HandleSoapException handleSoapExceptionnew = new HandleSoapException();
+                SoapException soapException = new SoapException();
+
+                soapException = handleSoapExceptionnew.CreateSoapException("http://tempuri.org/CategoriesService",
+                                                                                         "PerformLogin",
+                                                                                         ex.Message,
+                                                                                         AppEnum.FaultSourceWS.AplicationError.ToString(),
+                                                                                         "Business",
+                                                                                         AppEnum.FaultSourceWS.AplicationError);
+                throw soapException;
+                //return AppUtil.ThrowExceptionTable(ex);
+            }
+        }*/
+    } 
 }
